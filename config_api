@@ -1,14 +1,14 @@
 [openweathermap]
-api=843a73d5385a861cabc4088c0ca45dea
+api='YOUR API HERE'
 
 [darksky]
-api=e9cb78207ffce83ba83e78b2701222a4
+api='YOUR API HERE'
 
 [worldweatheronline]
-api=c12c292c51f1442c8aa90025192106
+api='YOUR API HERE'
 
 [checkwx_api]
-api=711fd7dcdc25138a2f57ed3578
+api='YOUR API HERE'
 
 [windy]
-api='PUT YOUR API KEY HERE'
+api='YOUR API HERE'
