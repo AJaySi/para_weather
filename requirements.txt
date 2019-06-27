@@ -1,0 +1,4 @@
+pyowm
+requests
+json
+forecastio

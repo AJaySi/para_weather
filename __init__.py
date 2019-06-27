@@ -1,4 +1,10 @@
 from mycroft import MycroftSkill, intent_file_handler
+from pyowm import OWM
+
+# FixMe: These need to go into a config file.
+owm_api = '843a73d5385a861cabc4088c0ca45dea'
+darksky_api = ''
+windy_api = ''
 
 
 class ParaglidingWeather(MycroftSkill):

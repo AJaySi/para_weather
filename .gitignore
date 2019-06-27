@@ -1,4 +1,8 @@
 __pycache__/
 *.qmlc
 settings.json
+*.pyc
+vocab/*
+test/*
+dialog/*
 
