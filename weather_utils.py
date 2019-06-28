@@ -202,6 +202,13 @@ def get_elevation():
     return(response['data'][0]['elevation']['meters'])
 
 
+# Utility function to remove duplicate words from the string
+def unique_wrds(lst):
+    ulist = []
+    [ulist.append(x) for x in lst if x not in ulist]
+    return ulist
+
+
 # Utility function to return the api key from config file
 def get_api_key(flag):
     config = ConfigParser.ConfigParser()

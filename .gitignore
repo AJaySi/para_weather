@@ -5,4 +5,6 @@ settings.json
 vocab/*
 test/*
 dialog/*
+config_api*
+config_api
 

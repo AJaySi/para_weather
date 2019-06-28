@@ -11,7 +11,7 @@ import forecastio
 #from pyowm.caches.lrucache import LRUCache
 #cache = LRUCache()
 from weather_utils import desc_code, wind_direction, cal_cloudbase
-from weather_utils import mph_to_kmph, windscale, get_api_key
+from weather_utils import mph_to_kmph, windscale, get_api_key, unique_wrds
 from weather_alerts import weather_alerts
 
 # User input, keeping the scope to pune for PoC porposes(MVP).
@@ -230,6 +230,7 @@ def weather_aviation(flag=''):
     elif 'taf' in flag:
         print("\n--------- 12hours TAF Weather Forecast --------\n")
         req = requests.get('https://api.checkwx.com/taf/vapo/decoded?pretty=1', headers=hdr).json()
+
         print("TAF Raw Text: {}".format(req["data"][0]["raw_text"]))
         print("TAF weather forecast for {} from {} till {}"\
             .format(req["data"][0]["station"]["name"], req["data"][0]["timestamp"]["issued"],\
@@ -240,24 +241,24 @@ def weather_aviation(flag=''):
         print("Wind forecast are, speed {}kmph, direction {} & Visibility {} meters"\
             .format(w_speed, w_dir, req["data"][0]["forecast"][0]["visibility"]["meters"]))
         
-        low_clouds = "The sky conditions at level {}m is {}({})"\
-            .format(req["data"][0]["forecast"][0]["clouds"][0]["base_meters_agl"],\
-            req["data"][0]["forecast"][0]["clouds"][0]["text"],\
-            req["data"][0]["forecast"][0]["clouds"][0]["code"])
-        mid_clouds = "and at level {}m is {}({})"\
-            .format(req["data"][0]["forecast"][0]["clouds"][1]["base_meters_agl"],\
-            req["data"][0]["forecast"][0]["clouds"][1]["text"],\
-            req["data"][0]["forecast"][0]["clouds"][1]["code"])
-        high_clouds = "at level {}m is {}({})"\
-            .format(req["data"][0]["forecast"][0]["clouds"][2]["base_meters_agl"],\
-            req["data"][0]["forecast"][0]["clouds"][2]["text"],\
-            req["data"][0]["forecast"][0]["clouds"][2]["code"])
+        cloud_str = ''
+        cld_index = [i for i, x in enumerate(req["data"][0]["forecast"][0]["clouds"])]
+        for acond in cld_index:
+            cloud_str += "at level {}m is {}({}) "\
+                .format(req["data"][0]["forecast"][0]["clouds"][acond]["base_meters_agl"],\
+                req["data"][0]["forecast"][0]["clouds"][acond]["text"],\
+                req["data"][0]["forecast"][0]["clouds"][acond]["code"])
+        print("Present Sky Conditions {}".format(cloud_str))
 
-        print("{} {} {}".format(low_clouds, mid_clouds, high_clouds))
-
-        print("The forecast conditions are {}({})"\
-            .format(req["data"][0]["forecast"][0]["conditions"][0]["text"], \
-            req["data"][0]["forecast"][0]["conditions"][0]["code"]))    
+        # Get all the conditions from the TAF
+        cond_str = ''
+        forcst_ind = [i for i, x in enumerate(req["data"][0]["forecast"])]
+        for f_idx in forcst_ind:
+            if len(req["data"][0]["forecast"][f_idx]["conditions"]) > 0:
+                cond_str += "{}({}) "\
+                    .format(req["data"][0]["forecast"][f_idx]["conditions"][0]["text"], \
+                    req["data"][0]["forecast"][f_idx]["conditions"][0]["code"])
+        print("Forecast conditions as {}".format(" ".join(unique_wrds(cond_str.split()))))
     
 
     # Returns the latest Station information for multiple stations within
