@@ -114,6 +114,8 @@ def weather_current_owm():
 # Common function to get the forecast for the given city.
 def weather_forecast_owm(city_name):
 
+    owm_api = get_api_key('owm')
+    owm_obj = OWM(owm_api)
     print("--------- Weather forecast every 3 hours, for next 5 days -------")
     # Query for 3 hours weather forecast for the next 5 days
     weather_fcast = owm_obj.three_hours_forecast(city_name)
@@ -292,11 +294,11 @@ if __name__ == "__main__":
     weather_current_owm()
     
     # Get weather forecast. Does it work with co-ordinates or name.
-    #weather_forecast_owm(city_name)
+    weather_forecast_owm(city_name)
 
     # Get Weather forecast with DARKSKY API. 
     # Get the next 5 days forecast from DarkSky API
-    #weather_forecast_darksky(lat, lng)
+    weather_forecast_darksky(lat, lng)
 
     # TBD: PAID : Get weather history from meteoStations, by ID
     #weather_history()
